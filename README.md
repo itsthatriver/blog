@@ -1,63 +1,69 @@
-# Astro Starter Kit: Blog
+# River's Edge
 
-```sh
-npm create astro@latest -- --template blog
+River's personal blog: war stories and lessons from a career in tech, plus
+the occasional post about life as an openly queer, trans engineer.
+
+Built with [Astro](https://astro.build) and served as static assets from
+Cloudflare Workers.
+
+## Commands
+
+| Command           | Action                                                   |
+| :---------------- | :------------------------------------------------------- |
+| `npm install`     | Install dependencies                                     |
+| `npm run dev`     | Dev server at `localhost:4321` (drafts are visible here) |
+| `npm run check`   | Type-check `.astro` and `.ts` files                      |
+| `npm run build`   | Build the production site into `./dist/`                 |
+| `npm run preview` | Build, then serve `./dist/` through the Workers runtime  |
+| `npm run deploy`  | Build and deploy to Cloudflare by hand                   |
+
+## Writing a post
+
+Add a Markdown (`.md`) or MDX (`.mdx`) file to `src/content/blog/`. The file
+name becomes the URL: `src/content/blog/my-post.md` is served at `/blog/my-post/`.
+
+```yaml
+---
+title: The Night the Queue Ate Itself
+description: One-sentence summary, used for the post list, RSS, and link previews.
+pubDate: 2026-10-14
+updatedDate: 2026-10-20  # optional
+heroImage: ../../assets/queue.jpg  # optional; also used as the social preview image
+tags: [war-story, infra]  # optional; lowercase kebab-case
+draft: true  # optional; drafts show up in `npm run dev` but never in production
+---
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+The schema in `src/content.config.ts` validates frontmatter, so a typo fails
+the build instead of shipping silently. Each tag gets its own page at
+`/tags/<tag>/`.
 
-Features:
+## Deployment
 
-- ✅ Minimal styling (make it your own!)
-- ✅ 100/100 Lighthouse performance
-- ✅ SEO-friendly with canonical URLs and Open Graph data
-- ✅ Sitemap support
-- ✅ RSS Feed support
-- ✅ Markdown & MDX support
+Pushing to `main` deploys through Cloudflare
+[Workers Builds](https://developers.cloudflare.com/workers/ci-cd/builds/).
+One-time setup in the Cloudflare dashboard:
 
-## 🚀 Project Structure
+1. **Workers & Pages → Create application → Import a repository**, then pick
+   `itsthatriver/blog`.
+2. Build command: `npm run build`. Deploy command: `npx wrangler deploy`.
+3. Once it's live, attach a custom domain to the `rivers-edge` Worker
+   (**Settings → Domains & Routes**) and set `site` in `astro.config.mjs` to
+   that domain. RSS, the sitemap, and canonical links are all built from it.
 
-Inside of your Astro project, you'll see the following folders and files:
+`wrangler.jsonc` holds the Worker config. The site is fully static, so it
+needs no adapter or Worker script.
 
-```text
-├── public/
-├── src/
-│   ├── assets/
-│   ├── components/
-│   ├── content/
-│   ├── layouts/
-│   └── pages/
-├── astro.config.mjs
-├── README.md
-├── package.json
-└── tsconfig.json
-```
+## Dependencies
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+`~/.npmrc` sets `min-release-age=7`, so new versions are installed only
+after they've been public for a week. `package.json` overrides wrangler's
+nested `sharp` to pick up a security fix; drop the override once wrangler
+depends on `sharp >= 0.35.5` by itself.
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## License
 
-The `src/content/` directory contains "collections" of related Markdown and MDX documents. Use `getCollection()` to retrieve posts from `src/content/blog/`, and type-check your frontmatter using an optional schema. See [Astro's Content Collections docs](https://docs.astro.build/en/guides/content-collections/) to learn more.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
-
-## Credit
-
-This theme is based off of the lovely [Bear Blog](https://github.com/HermanMartinus/bearblog/).
+Code is MIT licensed (see [`LICENSE`](LICENSE)). Post content in
+`src/content/` is © River, licensed under
+[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) (see
+[`src/content/LICENSE`](src/content/LICENSE)).

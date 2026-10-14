@@ -6,6 +6,7 @@ import { defineConfig, fontProviders } from 'astro/config';
 
 // https://astro.build/config
 export default defineConfig({
+	// TODO: replace with the real domain once it's attached to the Worker in Cloudflare.
 	site: 'https://example.com',
 	integrations: [mdx(), sitemap()],
 	fonts: [

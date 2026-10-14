@@ -1,0 +1,11 @@
+// Cloudflare Workers static-assets deployment. Astro builds a fully static
+// site into ./dist; no Worker script or @astrojs/cloudflare adapter is needed.
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "rivers-edge",
+	"compatibility_date": "2026-10-14",
+	"assets": {
+		"directory": "./dist",
+		"not_found_handling": "404-page"
+	}
+}
