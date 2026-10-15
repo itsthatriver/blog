@@ -1,7 +1,7 @@
 # River's Edge
 
 River's personal blog: war stories and lessons from a career in tech, plus
-the occasional post about life as an openly queer, trans engineer.
+the some queer stuff!
 
 Built with [Astro](https://astro.build) and served as static assets from
 Cloudflare Workers.
